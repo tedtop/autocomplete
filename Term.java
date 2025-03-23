@@ -2,24 +2,25 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class Term implements Comparable<Term> {
-    
+    private final String query;
+    private final long weight;
+
     // Initializes a term with the given query string and weight.
     public Term(String query, long weight) {
-
+        this.query = query;
+        this.weight = weight;
     }
 
     public static Comparator<Term> byReverseWeightOrder() {
         return new Comparator<Term>() {
             public int compare(Term v, Term w) {
-                //some condition
-                    return -1;
-                //some condition
-                    return 1;
-                //some condition
-                    return 0;
-
+                if (v.weight > w.weight)
+                    return -1;  // v comes before w (descending order)
+                else if (v.weight < w.weight)
+                    return 1;   // v comes after w (descending order)
+                else
+                    return 0;   // v and w are equal
             }
-
         };
     }
 
@@ -27,20 +28,26 @@ public class Term implements Comparable<Term> {
     public static Comparator<Term> byPrefixOrder(int r) {
         return new Comparator<Term>() {
             public int compare(Term v, Term w) {
-                //FIXME
+                // Get the prefix of each query up to r characters
+                // If the query is shorter than r, use the whole query
+                String prefixV = v.query.substring(0, Math.min(r, v.query.length()));
+                String prefixW = w.query.substring(0, Math.min(r, w.query.length()));
+
+                // Compare the prefixes lexicographically
+                return prefixV.compareTo(prefixW);
             }
         };
     }
 
     // Compares the two terms in lexicographic order by query.
     public int compareTo(Term that) {
-        return 0; //FIXME
+        return this.query.compareTo(that.query);
     }
 
     // Returns a string representation of this term in the following format:
     // the weight, followed by a tab, followed by the query.
     public String toString() {
-        return null; //FIXME
+        return weight + "\t" + query;
     }
 
     // unit testing (you should have some Unit Testing here to confirm that your methods work); for example...

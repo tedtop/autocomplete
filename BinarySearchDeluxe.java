@@ -6,15 +6,53 @@ public class BinarySearchDeluxe {
     
     // Returns the index of the first key in a[] that equals the search key, or -1 if no such key.
     public static <Key> int firstIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
+        int lo = 0;
+        int hi = a.length - 1;
+        int result = -1;
 
-        return -999; //FIXME
-           
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            int cmp = comparator.compare(a[mid], key);
+
+            if (cmp == 0) {
+                // Key found, but it might not be the first occurrence
+                result = mid;
+                // Continue searching to the left
+                hi = mid - 1;
+            } else if (cmp < 0) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+
+        return result;
     }
 
     
     // Returns the index of the last key in a[] that equals the search key, or -1 if no such key.
     public static <Key> int lastIndexOf(Key[] a, Key key, Comparator<Key> comparator) {
-        return -999; //FIXME
+        int lo = 0;
+        int hi = a.length - 1;
+        int result = -1;
+
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            int cmp = comparator.compare(a[mid], key);
+
+            if (cmp == 0) {
+                // Key found, but it might not be the last occurrence
+                result = mid;
+                // Continue searching to the right
+                lo = mid + 1;
+            } else if (cmp < 0) {
+                lo = mid + 1;
+            } else {
+                hi = mid - 1;
+            }
+        }
+
+        return result;
     }
 
     // unit testing (you should have some Unit Testing here to confirm that your methods work); for example...
